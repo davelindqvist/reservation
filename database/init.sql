@@ -1,16 +1,16 @@
 CREATE TABLE "clients" (
-  "id" integer PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "name" varchar NOT NULL
 );
 
 CREATE TABLE "providers" (
-  "id" integer PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "name" varchar NOT NULL,
   "role" varchar NOT NULL
 );
 
 CREATE TABLE "appointments" (
-  "id" integer PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "status" varchar,
   "client_id" integer,
   "provider_id" integer NOT NULL,
@@ -77,7 +77,11 @@ EXECUTE PROCEDURE update_last_updated_appointments();
 INSERT INTO clients (id, name) VALUES
 (1, 'Alice Smith'),
 (2, 'Bob Johnson'),
-(3, 'Charlie Brown');
+(3, 'Charlie Brown'),
+(4, 'Kinsley Arthfael'),
+(5, 'Radha Nilas'),
+(6, 'Mandawuy Kristen'),
+(7, 'James Reagan');
 
 INSERT INTO providers (id, name, role) VALUES
 (1, 'Dr. Emily Davis', 'Therapist'),
@@ -87,4 +91,8 @@ INSERT INTO providers (id, name, role) VALUES
 INSERT INTO appointments (id, status, appointment_time, last_updated, provider_id) VALUES
 (1, 'available', '2024-06-06 09:00:00', '2024-06-06 08:00:00', 1),
 (2, 'available', '2024-06-06 10:00:00', '2024-06-06 08:00:00', 2),
-(3, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 3);
+(3, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 3),
+(4, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 1),
+(5, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 2),
+(6, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 3),
+(7, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 1);
