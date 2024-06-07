@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "nodemon -e ts --exec \"npm run build && npm start\"",
     "start": "node ./dist/app.js",
-    "test": "jest"
+    "test": "jest --verbose ./tests"
   },
   "author": "Dave Lindqvist",
   "license": "ISC",
