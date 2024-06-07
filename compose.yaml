@@ -14,8 +14,6 @@ services:
       - ${PORT}
     depends_on:
       - db
-    # volumes:
-    #   - .:/usr/src/app
 
   db:
     container_name: reservation_database
@@ -41,7 +39,6 @@ services:
       timeout: 5s
       retries: 5
   
-
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
