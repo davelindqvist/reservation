@@ -9,11 +9,9 @@ Submitted by: Dave Lindqvist
 ## Requirements
 To run this repository, you will need [Docker Desktop](https://docs.docker.com/compose/install/):
 
-    Docker: Ensure Docker is installed on your system. The repository has been tested with Docker version 26.1.1 and above.
+Docker and Docker Compose: Ensure Docker is installed on your system. The repository has been tested with Docker version 26.1.1 and above, and Docker Compose version 2.27.0-desktop.2 and above. 
 
-    Docker Compose: Docker Compose is needed to run multiple services. The repository has been tested with Docker Compose version 2.27.0-desktop.2 and above. 
-
-    Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
+Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 
 ## Objective
 
@@ -25,7 +23,7 @@ To run this repository, you will need [Docker Desktop](https://docs.docker.com/c
 - Reservations must be made at least 24 hours in advance
 
 ## Instructions for setup
-
+WIP
 
 ## Notes
 
@@ -37,17 +35,20 @@ I used postgres for a few reasons. The first being that this is a database the r
 
 The one limitiation I found with PG_Cron is its granularity. The lowest unit of time is scheduled at the minute level. As a consequence, the requirement around reservations expiring may exceed past 59 seconds. In the grand scheme of things, the difference of 30 minutes to 30 minutes and 59 seconds isn't a big deal consider. (You will notice in init.sql that the interval is `1 minutes` instead of `30 minutes`. This is for the sake of manually testing instead of waiting `30 minutes`.)
 
+Below is a screenshot of what you may see while testing this app
+
+![](assets/cronjob.png)
+
 The `.env` are purposefully exposed to help set everything up, when in reality, it should be hidden or uplodaded somewhere safer. The duplication of the `.env` in the root directory and within the `/api` is also on purpose, since the Dockerfile/Docker-Compose file had issues finding it. I'm sure there's a way to only have one `.env` but I didn't want to lose time on solving this.
 
 I decided to go in the route of database seeding as I found it easier to have it within this Docker setup, under `./database/init.sql`. 
 
 I have PG Admin for the reviewers convenience. I thought this was going to help me along the way, but, in hindsight, I barely used it and felt more inclined to use the command line terminal to access postgres instead.
 
-I considered working with a package that helped with converting timezones in the case that a provider and client are in different timezones. Once I started working with the backend, I felt it wasn't a big priority for this assessment, but it would be if this was for production.
+I considered working with a dependency that would help convert timezones in the case that a provider and client are in different timezones. Once I started working with the backend, I felt it wasn't a big priority for this assessment. However, it would be if this was for production.
 
 ## Stretch Goals
-- `Redis` &rarr; Distributed lock with TTL (Time To Live)
-  - To avoid double booking
+- `Redis` &rarr; Distributed lock with TTL (Time To Live) without using postgres/pg_cron
   - Scenario where appointment slot is being looked at. Locks unique identifier of appointment slot with a predefined TTL. If client completes the booking, then database is updated to "booked" and lock is released upon TTL. If TTL expires without booking, Redis releases lock and the appointment slot becomes available once again.
 - Authentication / Authorization
   - I _really_ wanted to implement this where it incorporates some `hasura` headers, but couldn't squeeze it in within the time limit.
@@ -69,5 +70,5 @@ I considered working with a package that helped with converting timezones in the
 
 
 References:
-1. [Docker, Postgres, Node, Typescript Setup)](https://dev.to/chandrapantachhetri/docker-postgres-node-typescript-setup-47db)
+1. [Docker, Postgres, Node, Typescript Setup](https://dev.to/chandrapantachhetri/docker-postgres-node-typescript-setup-47db)
 2. [PG_Cron in Docker](https://eduanbekker.com/post/pg-partman/)
