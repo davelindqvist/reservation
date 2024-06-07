@@ -103,4 +103,8 @@ app.patch(
   },
 );
 
+app.listen(8000, () => {
+  console.log(`server running on port ${process.env.PORT}`);
+});
+
 export { app, Request, Response };

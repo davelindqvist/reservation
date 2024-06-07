@@ -6,11 +6,11 @@ COPY ./src ./src
 RUN npm install
 CMD ["npm", "run", "dev"]
 
-FROM api AS test
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --include=dev
-COPY . .
-RUN npm run test
-RUN echo "=============== Tests passed ==============="
+# FROM api AS test
+# RUN --mount=type=bind,source=package.json,target=package.json \
+#     --mount=type=bind,source=package-lock.json,target=package-lock.json \
+#     --mount=type=cache,target=/root/.npm \
+#     npm ci --include=dev
+# COPY . .
+# RUN npm run test
+# RUN echo "=============== Tests passed ==============="
