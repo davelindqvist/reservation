@@ -14,8 +14,8 @@ export async function confirmAppointment(
     [clientId],
   );
 
-  if (res.rowCount === 0) {
-    throw new Error('No confirmed appointment');
+  if (res?.rowCount === 0) {
+    throw new Error('No confirmed appointments');
   }
 
   console.log('CONFIRMED APPOINTMENT RESULT =====> ', res);

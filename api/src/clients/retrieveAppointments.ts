@@ -14,7 +14,7 @@ export async function retrieveAppointments(
     [providerId],
   );
 
-  if (res.rowCount === 0) {
+  if (res?.rowCount === 0) {
     throw new Error('No available appointments');
   }
 

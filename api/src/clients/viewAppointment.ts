@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-export async function viewAppointments(
+export async function viewAppointment(
   dbClient: Pool,
   clientId: number,
   appointmentId: number,
@@ -15,7 +15,7 @@ export async function viewAppointments(
     [clientId, appointmentId],
   );
 
-  if (res.rowCount === 0) {
+  if (res?.rowCount === 0) {
     throw new Error('Unavailable to see appointment');
   }
 

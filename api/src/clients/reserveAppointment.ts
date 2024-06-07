@@ -17,7 +17,7 @@ export async function reserveAppointment(
     [appointmentId, clientId],
   );
 
-  if (res.rowCount === 0) {
+  if (res?.rowCount === 0) {
     throw new Error('Appointment slot is not available');
   }
 
@@ -30,7 +30,7 @@ export async function reserveAppointment(
     [appointmentId],
   );
 
-  if (updateRes.rowCount === 0) {
+  if (updateRes?.rowCount === 0) {
     throw new Error('Failed to reserve the appointment');
   }
 
