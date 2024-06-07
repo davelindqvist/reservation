@@ -23,7 +23,9 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 - Reservations must be made at least 24 hours in advance
 
 ## Instructions for setup
-WIP
+WIP -- There's a bug I still need to fix between Jest and Express's listening port. Will come back to this ASAP.
+
+API Port = 8000
 
 ## Notes
 
