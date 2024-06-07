@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon -e ts --exec \"npm run build && npm start\"",
-    "start": "node ./dist/app.js",
+    "start": "node ./dist/src/app.js",
     "test": "jest --verbose ./tests"
   },
   "author": "Dave Lindqvist",
