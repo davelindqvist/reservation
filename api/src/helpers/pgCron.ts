@@ -2,15 +2,15 @@ import { Pool } from 'pg';
 
 export async function pgCron(client: Pool): Promise<void> {
   await client.query('BEGIN'); // Start transaction
-
-  await client.query(`CREATE EXTENSION pg_cron;`);
-
-  await client.query(
-    `SELECT cron.schedule('*/1 * * * *', 'SELECT release_locks();');`,
-  );
-
-  await client.query('COMMIT'); // Commit transaction
-  console.log('CRON job successfully implemented to check every minute');
+  try {
+    await client.query(`CREATE EXTENSION pg_cron;`);
+    await client.query(`SELECT * FROM cron.job;`);
+    await client.query(
+      `SELECT cron.schedule('*/1 * * * *', 'SELECT release_locks();');`,
+    );
+    await client.query('COMMIT'); // Commit transaction
+    console.log('CRON job successfully implemented to check every minute');
+  } catch (err) {
+    console.log('CRON job may already be implemented - check database');
+  }
 }
-
-// test for existing cron.job with a return result of 1 for SELECT * FROM cron.job;
