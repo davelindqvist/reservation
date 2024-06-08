@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
@@ -8,6 +8,7 @@ import { reserveAppointment } from './clients/reserveAppointment';
 import { confirmAppointment } from './clients/confirmAppointment';
 import { retrieveAppointments } from './clients/retrieveAppointments';
 import { viewAppointment } from './clients/viewAppointment';
+import errorHandler from './helpers/errorHandler';
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -17,14 +18,14 @@ const pool = new Pool({
   port: 5432,
 });
 
-const connectToDB = async () => {
+async function connectToDB() {
   try {
     await pool.connect();
     await pgCron(pool);
   } catch (err) {
     console.log(err);
   }
-};
+}
 connectToDB();
 
 const app = express();
@@ -33,26 +34,29 @@ dotenv.config();
 app.use(bodyParser.json());
 
 // Confirms client of their reservation
-app.get('/appointments/:clientId', async (req: Request, res: Response) => {
-  const { clientId } = req.params;
-  try {
-    await confirmAppointment(pool, parseInt(clientId));
-    res.status(200).send('Client has .... appointments');
-  } catch (error) {
-    res.status(500).send('Error finding appointments');
-  }
-});
+app.get(
+  '/appointments/:clientId',
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { clientId } = req.params;
+    try {
+      const result = await confirmAppointment(pool, parseInt(clientId));
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 // Client retrieves available provider slots
 app.get(
   '/providers/:providerId/appointments',
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { providerId } = req.params;
     try {
-      await retrieveAppointments(pool, parseInt(providerId));
-      res.status(200).send('Successfully retrieved');
+      const result = await retrieveAppointments(pool, parseInt(providerId));
+      res.status(200).send(result);
     } catch (error) {
-      res.status(500).send('Error finding appointments');
+      next(error);
     }
   },
 );
@@ -63,8 +67,19 @@ app.post(
   async (req: Request, res: Response) => {
     const { providerId, date, startTime, endTime } = req.body;
     try {
-      await addProviderAppointments(pool, providerId, date, startTime, endTime);
-      res.status(201).send('Availability submitted successfully');
+      const result = await addProviderAppointments(
+        pool,
+        providerId,
+        date,
+        startTime,
+        endTime,
+      );
+      res
+        .status(201)
+        .send({
+          message: 'Availability submitted successfully',
+          appointments: result,
+        });
     } catch (error) {
       res.status(500).send('Error submitting availability');
     }
@@ -74,13 +89,17 @@ app.post(
 // Viewing a specific appointment which will lock it in database (technically not idempotent)
 app.get(
   '/clients/:clientId/appointments/:appointmentId',
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { clientId, appointmentId } = req.params;
     try {
-      await viewAppointment(pool, parseInt(clientId), parseInt(appointmentId));
-      res.status(200).send('Successfully viewed');
+      const result = await viewAppointment(
+        pool,
+        parseInt(clientId),
+        parseInt(appointmentId),
+      );
+      res.status(200).send(result);
     } catch (error) {
-      res.status(500).send('Error viewing appointment');
+      next(error);
     }
   },
 );
@@ -88,20 +107,23 @@ app.get(
 // Reserve appointment after viewing
 app.patch(
   '/clients/:clientId/appointments/:appointmentId',
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { clientId, appointmentId } = req.params;
     try {
-      await reserveAppointment(
+      const result = await reserveAppointment(
         pool,
         parseInt(clientId),
         parseInt(appointmentId),
       );
-      res.status(200).send('Reservation booked');
+      res.status(200).send(result);
     } catch (error) {
-      res.status(500).send('Error submitting reservation');
+      next(error);
     }
   },
 );
+
+app.use(errorHandler);
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(8000, () => {
     console.log(`server running on port ${process.env.PORT}`);
