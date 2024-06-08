@@ -6,6 +6,8 @@ services:
     build: 
       context: ./api
       dockerfile: Dockerfile.api
+      args:
+        - NODE_ENV=development
     env_file:
       - .env
     ports:
