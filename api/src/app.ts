@@ -74,12 +74,10 @@ app.post(
         startTime,
         endTime,
       );
-      res
-        .status(201)
-        .send({
-          message: 'Availability submitted successfully',
-          appointments: result,
-        });
+      res.status(201).send({
+        message: 'Availability slots submitted successfully',
+        appointments: result,
+      });
     } catch (error) {
       res.status(500).send('Error submitting availability');
     }
