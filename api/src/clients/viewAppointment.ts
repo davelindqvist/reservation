@@ -12,7 +12,7 @@ export async function viewAppointment(
       `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2 FOR UPDATE`,
       [clientId, appointmentId],
     );
-    if (res?.rowCount === 0) {
+    if (res.rowCount === 0) {
       throw Error;
     }
     await dbClient.query('COMMIT');
