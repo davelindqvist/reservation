@@ -63,9 +63,13 @@ describe('retrieveAppointments', () => {
   });
 
   test('throws an error when failure to retrieve appointments', async () => {
-    (pool.query as jest.Mock).mockRejectedValueOnce(
-      new Error('No available appointments'),
-    );
+    (pool.query as jest.Mock)
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // For BEGIN
+      .mockResolvedValueOnce({
+        rows: [],
+        rowCount: 0,
+      }) // For SELECT query
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For ROLLBACK
 
     const response = await request(app).get('/providers/1/appointments');
 

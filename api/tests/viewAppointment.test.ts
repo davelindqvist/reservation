@@ -58,9 +58,13 @@ describe('viewAppointment', () => {
   });
 
   test('throws an error when failure to server', async () => {
-    (pool.query as jest.Mock).mockRejectedValueOnce(
-      new Error('Appointment unavailable'),
-    );
+    (pool.query as jest.Mock)
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // For BEGIN
+      .mockResolvedValueOnce({
+        rows: [],
+        rowCount: 0,
+      }) // For UPDATE query
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For ROLLBACK
 
     const response = await request(app).get('/clients/1/appointments/1');
 

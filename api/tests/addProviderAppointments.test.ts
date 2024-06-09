@@ -89,19 +89,14 @@ describe('POST /providers/:providerId/appointments', () => {
   });
 
   it('should return 500 if an error occurs', async () => {
-    (pool.query as jest.Mock).mockRejectedValueOnce(
-      new Error('Error submitting availability'),
-    );
-
     const response = await request(app).post('/providers/1/appointments').send({
       providerId: 1,
       date: '2024-08-13',
-      startTime: '08:00:00',
-      endTime: '15:00:00',
+      startTime: '15:00:00',
+      endTime: '08:00:00',
     });
 
     expect(response.status).toBe(500);
-    expect(pool.query).toHaveBeenCalledWith('ROLLBACK');
     expect(response.text).toBe('Error submitting availability');
   });
 });

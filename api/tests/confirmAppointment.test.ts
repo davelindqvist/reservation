@@ -60,9 +60,13 @@ describe('confirmAppointment', () => {
   });
 
   test('throws an error when failure to server', async () => {
-    (pool.query as jest.Mock).mockRejectedValueOnce(
-      new Error('No confirmed appointments'),
-    );
+    (pool.query as jest.Mock)
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // For BEGIN
+      .mockResolvedValueOnce({
+        rows: [],
+        rowCount: 0,
+      }) // For SELECT query
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For ROLLBACK
 
     const response = await request(app).get('/appointments/1');
 
