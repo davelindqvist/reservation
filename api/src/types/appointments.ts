@@ -3,6 +3,6 @@ export type Appointments = {
   status: 'locked' | 'reserved' | 'available';
   client_id: number | null;
   provider_id: number;
-  appointment_time: Date;
-  last_updated: Date;
+  appointment_time: Date | string;
+  last_updated: Date | string;
 };

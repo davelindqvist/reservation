@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../src/app';
 import { Pool } from 'pg';
+import { Appointments } from '../src/types/appointments';
 
 jest.mock('pg', () => {
   const mPool = {
@@ -26,13 +27,14 @@ describe('confirmAppointment', () => {
   });
 
   test('confirms client has appointments', async () => {
-    const mockAppointments = [
+    const mockAppointments: Appointments[] = [
       {
         appointment_time: '2024-06-07T15:00:00Z',
         client_id: 1,
         id: 1,
         provider_id: 1,
         status: 'reserved',
+        last_updated: '2024-06-09T04:31:56.604Z',
       },
     ];
 
