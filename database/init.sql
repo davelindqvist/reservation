@@ -6,7 +6,8 @@ CREATE TABLE "clients" (
 CREATE TABLE "providers" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar NOT NULL,
-  "role" varchar NOT NULL
+  "role" varchar NOT NULL,
+  UNIQUE(name, role)
 );
 
 CREATE TABLE "appointments" (
@@ -16,7 +17,8 @@ CREATE TABLE "appointments" (
   "provider_id" integer NOT NULL,
   "appointment_time" timestamp NOT NULL,
   "last_updated" timestamp NOT NULL,
-  CONSTRAINT status_check CHECK (status IN ('available', 'locked', 'reserved'))
+  CONSTRAINT status_check CHECK (status IN ('available', 'locked', 'reserved')),
+  UNIQUE(appointment_time, provider_id)
 );
 
 CREATE TABLE "locks_history" (
@@ -49,7 +51,7 @@ FOR EACH ROW
 EXECUTE FUNCTION handle_lock_creation();
 
 -- Function to release locks after 1 minutes 
--- (FOR TESTING - should be 30 minutes in production)
+-- (FOR TESTING - should be 30 minutes in "production")
 CREATE OR REPLACE FUNCTION release_locks()
 RETURNS void AS $$
 BEGIN
@@ -74,25 +76,25 @@ CREATE TRIGGER update_appointments_last_updated
     FOR EACH ROW
 EXECUTE PROCEDURE update_last_updated_appointments();
 
-INSERT INTO clients (id, name) VALUES
-(1, 'Alice Smith'),
-(2, 'Bob Johnson'),
-(3, 'Charlie Brown'),
-(4, 'Kinsley Arthfael'),
-(5, 'Radha Nilas'),
-(6, 'Mandawuy Kristen'),
-(7, 'James Reagan');
+INSERT INTO clients (name) VALUES
+('Alice Smith'),
+('Bob Johnson'),
+('Charlie Brown'),
+('Kinsley Arthfael'),
+('Radha Nilas'),
+('Mandawuy Kristen'),
+('James Reagan');
 
-INSERT INTO providers (id, name, role) VALUES
-(1, 'Dr. Emily Davis', 'Therapist'),
-(2, 'Dr. Frank Miller', 'Psychiatrist'),
-(3, 'Dr. Grace Lee', 'Counselor');
+INSERT INTO providers (name, role) VALUES
+('Dr. Emily Davis', 'Therapist'),
+('Dr. Frank Miller', 'Psychiatrist'),
+('Dr. Grace Lee', 'Counselor');
 
-INSERT INTO appointments (id, status, appointment_time, last_updated, provider_id) VALUES
-(1, 'available', '2024-06-06 09:00:00', '2024-06-06 08:00:00', 1),
-(2, 'available', '2024-06-06 10:00:00', '2024-06-06 08:00:00', 2),
-(3, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 3),
-(4, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 1),
-(5, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 2),
-(6, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 3),
-(7, 'available', '2024-06-06 11:00:00', '2024-06-06 08:00:00', 1);
+INSERT INTO appointments (status, appointment_time, last_updated, provider_id) VALUES
+('available', NOW() + INTERVAL '12 hours', '2024-06-06 08:00:00', 1),
+('available', NOW() + INTERVAL '16 hours', '2024-06-06 08:00:00', 2),
+('available', NOW() + INTERVAL '20 hours', '2024-06-06 08:00:00', 3),
+('available', NOW() + INTERVAL '24 hours', '2024-06-06 08:00:00', 1),
+('available', NOW() + INTERVAL '28 hours', '2024-06-06 08:00:00', 2),
+('available', NOW() + INTERVAL '32 hours', '2024-06-06 08:00:00', 3),
+('available', NOW() + INTERVAL '36 hours', '2024-06-06 08:00:00', 1);
