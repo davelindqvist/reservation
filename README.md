@@ -35,7 +35,7 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
     - Password = `password`
 5. You'll then find the tables through `Database > reservations > Tables` as seen below
 
-<!-- ![PG Admin](assets/pgadmin.png) -->
+![PG Admin](assets/pgadmin.png)
 
 ## Objective
 
@@ -64,7 +64,7 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 
 My largest focus (yet unintentional) on this submission was creating an environment where the reviewer could easily run this on their machine. It wasn't until the latter half of this project where I was able to get the backend logic to work. 
 
-While there are some tests within the `api` folder, you will also see a sub-directory of an integration folder. There are currently only unit tests around the endpoints. I hoped to have done integration tests too to view the affects of the backend functions to the database.
+While there are some tests within the `api` folder, you will also see a sub-directory of an integration folder. There are currently only unit tests around the endpoints. I hoped to have done [integration tests](https://node.testcontainers.org/quickstart/) too to view the affects of the backend functions to the database.
 
 I used postgres for a few reasons. The first being that this is a database the reviewer is already familiar with. The second being that postgres can do [_a lot_](https://www.amazingcto.com/postgres-for-everything/) of things. I was successfully able to implement the PG_Cron extension within postgres. Of course, it didn't come without some headaches to get it to work. You will notice how I have a helper function called `pgCron`in `./api/src/helpers/pgCron.ts` to help continue initializing the database with the CRON job.
 
@@ -76,17 +76,17 @@ Below is a screenshot of what you may see while testing this app
 
 Additionally, I decided to go in the route of database seeding via `init.sql` as I found it easier to have it within this Docker setup.
 
-The `.env` are purposefully exposed to help set everything up, when in reality, it should be hidden or uplodaded somewhere safer. The duplication of the `.env` in the root directory and within the `/api` is also on purpose, since the Dockerfile/Docker-Compose file had issues finding it. I'm sure there's a way to only have one `.env` but I didn't want to lose time on solving this.
+The `.env` are purposefully exposed to help set everything up, when in reality, it should be hidden or uplodaded somewhere safer. The duplication of the `.env` in the root directory and within the `/api` is also on purpose, since the Dockerfile/Docker-Compose file had issues finding it if it was only in one directory and not both.
 
 I have PG Admin for the reviewers convenience. I thought this was going to help me along the way, but, in hindsight, I barely used it and felt more inclined to use the command line terminal to access postgres instead.
 
 I considered working with a dependency that would help convert timezones in the case that a provider and client are in different timezones. Once I started working with the backend, I felt it wasn't a big priority for this assessment. However, it would be if this was for production.
 
 ## Stretch Goals
-- `Redis` &rarr; Distributed lock with TTL (Time To Live) without using postgres/pg_cron
+- Redis &rarr; Distributed lock with TTL (Time To Live) without using postgres/pg_cron
   - Scenario where appointment slot is being looked at. Locks unique identifier of appointment slot with a predefined TTL. If client completes the booking, then database is updated to "booked" and lock is released upon TTL. If TTL expires without booking, Redis releases lock and the appointment slot becomes available once again.
 - Authentication / Authorization
-  - I _really_ wanted to implement this where it incorporates some `hasura` headers, but couldn't squeeze it in within the time limit.
+  - `hasura` headers
 
 References:
 1. [Docker, Postgres, Node, Typescript Setup](https://dev.to/chandrapantachhetri/docker-postgres-node-typescript-setup-47db)
