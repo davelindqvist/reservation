@@ -64,12 +64,14 @@ describe('POST /providers/:providerId/appointments', () => {
       .mockResolvedValueOnce({ rowCount: 2, rows: mockAppointments }) // For INSERT query
       .mockResolvedValueOnce({}); // For COMMIT query
 
-    const response = await request(app).post('/providers/1/appointments').send({
-      providerId: 1,
-      date: '2024-08-13',
-      startTime: '08:00:00',
-      endTime: '08:30:00',
-    });
+    const response = await request(app)
+      .post('/api/v1/providers/1/appointments')
+      .send({
+        providerId: 1,
+        date: '2024-08-13',
+        startTime: '08:00:00',
+        endTime: '08:30:00',
+      });
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual(
@@ -89,12 +91,14 @@ describe('POST /providers/:providerId/appointments', () => {
   });
 
   it('should return 500 if an error occurs', async () => {
-    const response = await request(app).post('/providers/1/appointments').send({
-      providerId: 1,
-      date: '2024-08-13',
-      startTime: '15:00:00',
-      endTime: '08:00:00',
-    });
+    const response = await request(app)
+      .post('/api/v1/providers/1/appointments')
+      .send({
+        providerId: 1,
+        date: '2024-08-13',
+        startTime: '15:00:00',
+        endTime: '08:00:00',
+      });
 
     expect(response.status).toBe(500);
     expect(response.text).toBe('Error submitting availability');

@@ -44,14 +44,14 @@ describe('viewAppointment', () => {
       }) // For SELECT query
       .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For COMMIT
 
-    const response = await request(app).get('/clients/1/appointments/1');
+    const response = await request(app).get('/api/v1/clients/1/appointments/1');
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockAppointments);
     expect(pool.query).toHaveBeenCalledTimes(3);
     expect(pool.query).toHaveBeenCalledWith(`BEGIN`);
     expect(pool.query).toHaveBeenCalledWith(
-      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2 FOR UPDATE`,
+      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2`,
       [1, 1],
     );
     expect(pool.query).toHaveBeenCalledWith(`COMMIT`);
@@ -66,7 +66,7 @@ describe('viewAppointment', () => {
       }) // For UPDATE query
       .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For ROLLBACK
 
-    const response = await request(app).get('/clients/1/appointments/1');
+    const response = await request(app).get('/api/v1/clients/1/appointments/1');
 
     expect(pool.query).toHaveBeenCalledWith(`ROLLBACK`);
     expect(response.status).toBe(500);

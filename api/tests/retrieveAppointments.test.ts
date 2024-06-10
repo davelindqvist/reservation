@@ -49,7 +49,7 @@ describe('retrieveAppointments', () => {
       }) // For SELECT query
       .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For COMMIT
 
-    const response = await request(app).get('/providers/1/appointments');
+    const response = await request(app).get('/api/v1/providers/1/appointments');
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockAppointments);
@@ -71,7 +71,7 @@ describe('retrieveAppointments', () => {
       }) // For SELECT query
       .mockResolvedValueOnce({ rows: [], rowCount: 0 }); // For ROLLBACK
 
-    const response = await request(app).get('/providers/1/appointments');
+    const response = await request(app).get('/api/v1/providers/1/appointments');
 
     expect(pool.query).toHaveBeenCalledWith(`ROLLBACK`);
     expect(response.status).toBe(500);

@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 // Confirms client of their reservation
 app.get(
-  '/appointments/:clientId',
+  '/api/v1/appointments/:clientId',
   async (req: Request, res: Response, next: NextFunction) => {
     const { clientId } = req.params;
     try {
@@ -49,7 +49,7 @@ app.get(
 
 // Client retrieves available provider slots
 app.get(
-  '/providers/:providerId/appointments',
+  '/api/v1/providers/:providerId/appointments',
   async (req: Request, res: Response, next: NextFunction) => {
     const { providerId } = req.params;
     try {
@@ -63,7 +63,7 @@ app.get(
 
 // Submit provider appointments in 15-minute intervals
 app.post(
-  '/providers/:providerId/appointments',
+  '/api/v1/providers/:providerId/appointments',
   async (req: Request, res: Response) => {
     const { providerId, date, startTime, endTime } = req.body;
     try {
@@ -84,9 +84,9 @@ app.post(
   },
 );
 
-// Viewing a specific appointment which will lock it in database (technically not idempotent)
+// Views a specific appointment which will lock appointment record in database (not technically idempotent)
 app.get(
-  '/clients/:clientId/appointments/:appointmentId',
+  '/api/v1/clients/:clientId/appointments/:appointmentId',
   async (req: Request, res: Response, next: NextFunction) => {
     const { clientId, appointmentId } = req.params;
     try {
@@ -102,9 +102,9 @@ app.get(
   },
 );
 
-// Reserve appointment after viewing
+// Reserves appointment after viewing
 app.patch(
-  '/clients/:clientId/appointments/:appointmentId',
+  '/api/v1/clients/:clientId/appointments/:appointmentId',
   async (req: Request, res: Response, next: NextFunction) => {
     const { clientId, appointmentId } = req.params;
     try {
