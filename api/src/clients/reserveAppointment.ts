@@ -16,7 +16,7 @@ export async function reserveAppointment(
       throw new Error('Appointment slot is not available');
     }
     const updateRes = await dbClient.query(
-      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'available' AND appointment_time > NOW() + INTERVAL '24 hours'`,
+      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours'`,
       [appointmentId],
     );
     if (updateRes.rowCount === 0) {

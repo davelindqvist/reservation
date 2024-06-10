@@ -8,7 +8,7 @@ export async function confirmAppointment(
   try {
     await dbClient.query('BEGIN');
     const res = await dbClient.query(
-      `SELECT * FROM appointments AND client_id = $1 AND status = 'reserved' FOR UPDATE`,
+      `SELECT * FROM appointments WHERE client_id = $1 AND status = 'reserved'`,
       [clientId],
     );
     if (res.rowCount === 0) {
