@@ -35,7 +35,7 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
     - Password = `password`
 5. You'll then find the tables through `Database > reservations > Tables` as seen below
 
-![PG Admin](assets/pgadmin.png)
+<!-- ![PG Admin](assets/pgadmin.png) -->
 
 ## Objective
 
@@ -45,6 +45,19 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 - Allow clients to confirm reservation
 - Reservations expire after 30 minutes if not confirmed
 - Reservations must be made at least 24 hours in advance
+
+## Endpoints
+
+`Base URL = http://localhost:8000/api/v1`
+
+|  HTTP Request   | Method | Description | Body Example |
+| :--: | :--: | :--: | :--: | 
+| `/appointments/{clientId}` | GET | Confirms client of their reservation | N/A|
+| `/providers/{providerId}/appointments` | GET | Client retrieves available provider slots | N/A |
+| `/providers/{providerId}/appointments` | POST | Submit provider appointments in 15-minute intervals | <pre lang="json"> {<br>"providerId": 1,<br>"date": "2024-08-13",<br>"startTime": "08:00:00", <br>"endTime": "15:00:00" <br>} </pre> |
+| `/clients/{clientId}/appointments/{appointmentId}` | GET | Views a specific appointment which will lock appointment record in database (not technically idempotent) | N/A |
+| `/clients/{clientId}/appointments/{appointmentId}` | PATCH | Reserves appointment after viewing | N/A |
+
 
 
 ## Notes and thoughts
