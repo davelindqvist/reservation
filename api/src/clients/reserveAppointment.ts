@@ -22,8 +22,6 @@ export async function reserveAppointment(
     if (updateRes.rowCount === 0) {
       throw Error;
     }
-
-    console.log(updateRes);
     await dbClient.query('COMMIT');
     return updateRes.rows;
   } catch (err) {

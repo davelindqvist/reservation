@@ -66,13 +66,7 @@ My largest focus (yet unintentional) on this submission was creating an environm
 
 While there are some tests within the `api` folder, you will also see a sub-directory of an integration folder. There are currently only unit tests around the endpoints. I hoped to have done [integration tests](https://node.testcontainers.org/quickstart/) too to view the affects of the backend functions to the database.
 
-I used postgres for a few reasons. The first being that this is a database the reviewer is already familiar with. The second being that postgres can do [_a lot_](https://www.amazingcto.com/postgres-for-everything/) of things. I was successfully able to implement the PG_Cron extension within postgres. Of course, it didn't come without some headaches to get it to work. You will notice how I have a helper function called `pgCron` in `./api/src/helpers/pgCron.ts` to help continue initializing the database with the CRON job.
-
-One limitiation I found with PG_Cron is its granularity. The lowest unit of time is scheduled at the minute level. As a consequence, the requirement around reservations expiring may exceed past 59 seconds. I'd like to think the difference of 30 minutes to 30 minutes and 59 seconds isn't a big deal in the grand scheme of things. (You will notice in `./database/init.sql` that the interval is `1 minutes` instead of `30 minutes`. This is only for manual testing instead of waiting `30 minutes` in a production setting.)
-
-Below is a screenshot of what you may see while testing this app
-
-<img src= "assets/cronjob.png" alt="CRON job in postgres database" style="border: 2px solid grey;">
+I used postgres for a few reasons. The first being that this is a database the reviewer is already familiar with. The second being that postgres can do [_a lot_](https://www.amazingcto.com/postgres-for-everything/) of things. I was successfully able to implement the PG_Cron extension within postgres. Of course, it didn't come without some headaches to get it to work. You will notice how I have a helper function called `pgCron` in `./api/src/helpers/pgCron.ts` to help continue initializing the database with the CRON job, which sets the CRON job to be called every 15 seconds.
 
 Additionally, I decided to go in the route of database seeding via `init.sql` as I found it easier to have it within this Docker setup.
 

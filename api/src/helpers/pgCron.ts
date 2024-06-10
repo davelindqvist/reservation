@@ -6,7 +6,7 @@ export async function pgCron(client: Pool): Promise<void> {
     await client.query(`CREATE EXTENSION pg_cron;`);
     await client.query(`SELECT * FROM cron.job;`);
     await client.query(
-      `SELECT cron.schedule('*/1 * * * *', 'SELECT release_locks();');`,
+      `SELECT cron.schedule('15 seconds', 'SELECT release_locks();');`,
     );
     await client.query('COMMIT'); // Commit transaction
     console.log('CRON job successfully implemented to check every minute');
