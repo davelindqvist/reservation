@@ -53,7 +53,7 @@ describe('confirmAppointment', () => {
     expect(pool.query).toHaveBeenCalledTimes(3);
     expect(pool.query).toHaveBeenCalledWith(`BEGIN`);
     expect(pool.query).toHaveBeenCalledWith(
-      `SELECT * FROM appointments AND client_id = $1 AND status = 'reserved'`,
+      `SELECT * FROM appointments WHERE client_id = $1 AND status = 'reserved'`,
       [1],
     );
     expect(pool.query).toHaveBeenCalledWith(`COMMIT`);
