@@ -37,7 +37,7 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 
 ![PG Admin](assets/pgadmin.png)
 
-## Objective
+## Objectives
 
 - Allow providers to submit times of availability
 - Allow clients to retrieve list of available 15-min appointment slots
