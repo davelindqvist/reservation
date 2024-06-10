@@ -56,7 +56,7 @@ describe('reserveAppointment', () => {
       [1, 1],
     );
     expect(pool.query).toHaveBeenCalledWith(
-      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours'`,
+      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours' RETURNING *`,
       [1],
     );
     expect(pool.query).toHaveBeenCalledWith('ROLLBACK');
@@ -80,7 +80,7 @@ describe('reserveAppointment', () => {
       [1, 1],
     );
     expect(pool.query).toHaveBeenCalledWith(
-      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours'`,
+      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours' RETURNING *`,
       [1],
     );
     expect(pool.query).toHaveBeenCalledWith('COMMIT');

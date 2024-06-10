@@ -9,7 +9,7 @@ export async function viewAppointment(
   try {
     await dbClient.query('BEGIN');
     const res = await dbClient.query(
-      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2`,
+      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2 RETURNING *`,
       [clientId, appointmentId],
     );
     if (res.rowCount === 0) {

@@ -16,12 +16,14 @@ export async function reserveAppointment(
       throw new Error('Appointment slot is not available');
     }
     const updateRes = await dbClient.query(
-      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours'`,
+      `UPDATE appointments SET status = 'reserved' WHERE id = $1 AND status = 'locked' AND appointment_time > NOW() + INTERVAL '24 hours' RETURNING *`,
       [appointmentId],
     );
     if (updateRes.rowCount === 0) {
       throw Error;
     }
+
+    console.log(updateRes);
     await dbClient.query('COMMIT');
     return updateRes.rows;
   } catch (err) {

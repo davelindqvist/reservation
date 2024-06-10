@@ -51,7 +51,7 @@ describe('viewAppointment', () => {
     expect(pool.query).toHaveBeenCalledTimes(3);
     expect(pool.query).toHaveBeenCalledWith(`BEGIN`);
     expect(pool.query).toHaveBeenCalledWith(
-      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2`,
+      `UPDATE appointments SET status = 'locked', client_id = $1 WHERE id = $2 RETURNING *`,
       [1, 1],
     );
     expect(pool.query).toHaveBeenCalledWith(`COMMIT`);
