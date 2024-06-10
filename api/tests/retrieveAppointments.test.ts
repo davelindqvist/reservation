@@ -30,14 +30,18 @@ describe('retrieveAppointments', () => {
       {
         id: 1,
         provider_id: 1,
+        client_id: null,
         status: 'available',
         appointment_time: '2024-06-07T15:00:00Z',
+        last_updated: '2024-06-06T04:31:56.604Z',
       },
       {
         id: 2,
         provider_id: 1,
+        client_id: null,
         status: 'available',
         appointment_time: '2024-06-07T16:00:00Z',
+        last_updated: '2024-06-06T04:31:56.604Z',
       },
     ];
 

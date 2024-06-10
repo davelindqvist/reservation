@@ -29,6 +29,7 @@ describe('viewAppointment', () => {
     const mockAppointments = [
       {
         appointment_time: '2024-06-07T15:00:00Z',
+        last_updated: '2024-06-06T04:31:56.604Z',
         client_id: 1,
         id: 1,
         provider_id: 1,

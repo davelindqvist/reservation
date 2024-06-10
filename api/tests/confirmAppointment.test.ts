@@ -34,7 +34,7 @@ describe('confirmAppointment', () => {
         id: 1,
         provider_id: 1,
         status: 'reserved',
-        last_updated: '2024-06-09T04:31:56.604Z',
+        last_updated: '2024-06-06T04:31:56.604Z',
       },
     ];
 
