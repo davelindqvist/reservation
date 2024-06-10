@@ -6,10 +6,7 @@ import { Appointments } from '../src/types/appointments';
 jest.mock('pg', () => {
   const mPool = {
     query: jest.fn(),
-    connect: jest.fn().mockResolvedValue({
-      query: jest.fn(),
-      release: jest.fn(),
-    }),
+    connect: jest.fn(),
     end: jest.fn(),
   };
   return { Pool: jest.fn(() => mPool) };
