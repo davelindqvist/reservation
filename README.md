@@ -2,10 +2,6 @@
 
 Submitted by: Dave Lindqvist
 
-## Database Schema
-
-![Reservation database schema](assets/schema.png)
-
 ## Requirements
 To run this repository, you will need [Docker Desktop](https://docs.docker.com/compose/install/):
 
@@ -35,7 +31,13 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
     - Password = `password`
 5. You'll then find the tables through `Database > reservations > Schemas > public >  Tables` as seen below
 
-![PG Admin](assets/pgadmin.png)
+<img src= "assets/pgadmin.png" alt="PG Admin" style="border: 2px solid grey;" width=50%>
+
+
+## Database schema - made with [DBDiagram.io](https://dbdiagram.io/)
+
+<img src= "assets/schema.png" alt="Reservation database schema" style="border: 2px solid grey;">
+
 
 ## Objectives
 
@@ -52,13 +54,11 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 
 |  HTTP Request   | Method | Description | Body Example |
 | :--: | :--: | :--: | :--: | 
-| `/appointments/{clientId}` | GET | Confirms client of their reservation | N/A|
-| `/providers/{providerId}/appointments` | GET | Client retrieves available provider slots | N/A |
-| `/providers/{providerId}/appointments` | POST | Submit provider appointments in 15-minute intervals | <pre lang="json"> {<br>"providerId": 1,<br>"date": "2024-08-13",<br>"startTime": "08:00:00", <br>"endTime": "15:00:00" <br>} </pre> |
-| `/clients/{clientId}/appointments/{appointmentId}` | GET | Views a specific appointment which will lock appointment record in database (not technically idempotent) | N/A |
-| `/clients/{clientId}/appointments/{appointmentId}` | PATCH | Reserves appointment after viewing | N/A |
-
-
+| `/appointments/{clientId}` | `GET` | Confirms client of their reservation | N/A|
+| `/providers/{providerId}/appointments` | `GET` | Client retrieves available provider slots | N/A |
+| `/providers/{providerId}/appointments` | `POST` | Submit provider appointments in 15-minute intervals | <pre lang="json"> {<br>"providerId": 1,<br>"date": "2024-08-13",<br>"startTime": "08:00:00", <br>"endTime": "15:00:00" <br>} </pre> |
+| `/clients/{clientId}/appointments/{appointmentId}` | `GET` | Views a specific appointment which will lock appointment record in database (not technically idempotent) | N/A |
+| `/clients/{clientId}/appointments/{appointmentId}` | `PATCH` | Reserves appointment after viewing | N/A |
 
 ## Notes and thoughts
 
@@ -72,7 +72,7 @@ One limitiation I found with PG_Cron is its granularity. The lowest unit of time
 
 Below is a screenshot of what you may see while testing this app
 
-![](assets/cronjob.png)
+<img src= "assets/cronjob.png" alt="CRON job in postgres database" style="border: 2px solid grey;">
 
 Additionally, I decided to go in the route of database seeding via `init.sql` as I found it easier to have it within this Docker setup.
 
@@ -83,7 +83,7 @@ I have PG Admin for the reviewers convenience. I thought this was going to help 
 I considered working with a dependency that would help convert timezones in the case that a provider and client are in different timezones. Once I started working with the backend, I felt it wasn't a big priority for this assessment. However, it would be if this was for production.
 
 ## Stretch Goals
-- Redis &rarr; Distributed lock with TTL (Time To Live) without using postgres/pg_cron
+- Redis &rarr; Distributed lock with TTL (Time To Live) without using pg_cron
   - Scenario where appointment slot is being looked at. Locks unique identifier of appointment slot with a predefined TTL. If client completes the booking, then database is updated to "booked" and lock is released upon TTL. If TTL expires without booking, Redis releases lock and the appointment slot becomes available once again.
 - Authentication / Authorization
   - `hasura` headers
