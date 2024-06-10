@@ -52,13 +52,13 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
 
 `Base URL = http://localhost:8000/api/v1`
 
-|  HTTP Request   | Method | Description | Body Example |
-| :--: | :--: | :--: | :--: | 
-| `/appointments/{clientId}` | `GET` | Confirms client of their reservation | N/A|
-| `/providers/{providerId}/appointments` | `GET` | Client retrieves available provider slots | N/A |
-| `/providers/{providerId}/appointments` | `POST` | Submit provider appointments in 15-minute intervals | <pre lang="json"> {<br>"providerId": 1,<br>"date": "2024-08-13",<br>"startTime": "08:00:00", <br>"endTime": "15:00:00" <br>} </pre> |
-| `/clients/{clientId}/appointments/{appointmentId}` | `GET` | Views a specific appointment which will lock appointment record in database (not technically idempotent) | N/A |
-| `/clients/{clientId}/appointments/{appointmentId}` | `PATCH` | Reserves appointment after viewing | N/A |
+|  HTTP Request   | Method | Description | Body Example | Response Example |
+| :--: | :--: | :--: | :--: | :--: | 
+| `/appointments/{clientId}` | `GET` | Confirms client of their reservation | N/A| <pre lang="json">{ id: 1, provider_id: 1, client_id: 1, status: 'reserved', appointment_time: '2024-06-07T15:00:00Z', last_updated: '2024-06-06T04:31:56.604Z' }</pre> |
+| `/providers/{providerId}/appointments` | `GET` | Client retrieves available provider slots | N/A | <pre lang="json">[ { id: 1, provider_id: 1, client_id: null, status: 'available', appointment_time: '2024-06-07T15:00:00Z', last_updated: '2024-06-06T04:31:56.604Z' }, { id: 2, provider_id: 1, client_id: null, status: 'available', appointment_time: '2024-06-07T16:00:00Z', last_updated: '2024-06-06T04:31:56.604Z' } ] </pre> |
+| `/providers/{providerId}/appointments` | `POST` | Submit provider appointments in 15-minute intervals | <pre lang="json"> { "providerId": 1, "date": "2024-08-13", "startTime": "08:00:00", "endTime": "15:00:00" } </pre> | <pre lang="json"> { "message": "Availability slots submitted successfully", "appointments": [ { "id": 8, "status": "available", "client_id": null, "provider_id": 1, "appointment_time": "2024-08-15T08:00:00.000Z", "last_updated": "2024-06-10T03:57:42.876Z" }, ... ] } </pre> |
+| `/clients/{clientId}/appointments/{appointmentId}` | `GET` | Views a specific appointment which will lock appointment record in database (not technically idempotent) | N/A | <pre lang="json"> { appointment_time: '2024-06-07T15:00:00Z', last_updated:  "2024-06-06T03:57:42.876Z", client_id: 1, id: 1, provider_id: 1, status: 'locked' } </pre> |
+| `/clients/{clientId}/appointments/{appointmentId}` | `PATCH` | Reserves appointment after viewing | N/A | <pre lang="json"> { appointment_time: '2024-06-07T15:00:00Z', last_updated:  "2024-06-06T03:57:42.876Z", client_id: 1, id: 1, provider_id: 1, status: 'reserved' } </pre>  |
 
 ## Notes and thoughts
 
