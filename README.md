@@ -33,7 +33,7 @@ Operating System: The setup creating this repo was with a  macOS (Sonoma 14.5)
     - Host name/address = `db`
     - Username = `postgres`
     - Password = `password`
-5. You'll then find the tables through `Database > reservations > Tables` as seen below
+5. You'll then find the tables through `Database > reservations > Schemas > public >  Tables` as seen below
 
 ![PG Admin](assets/pgadmin.png)
 
